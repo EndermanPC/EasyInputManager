@@ -1,4 +1,4 @@
-# EasyInputManager
+# Easy Input Manager
 
 A cross-platform graphical tool for managing input devices (xinput/libinput) with real-time configuration capabilities.
 
