@@ -3,6 +3,11 @@
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_sdlrenderer2.h"
 #include <iostream>
+#include <ctime>
+#include <chrono>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
 
 bool App::init() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -113,8 +118,13 @@ void App::renderUI() {
         ImGui::Separator();
 
         // Add current time and user info
-        ImGui::TextDisabled("Last Updated: 2025-07-05 13:38:27");
-        ImGui::TextDisabled("User: EndermanPC");
+        std::string lastUpdate = "Never";
+        std::ifstream inFile("~/.last_xinput");
+        if(inFile.good()) {
+            std::getline(inFile, lastUpdate);
+        }
+        ImGui::TextDisabled("Last Updated: %s", lastUpdate.c_str());
+        ImGui::TextDisabled("User: %s", getenv("USER")); 
         ImGui::Separator();
 
         // Properties in a scrollable area
@@ -151,6 +161,19 @@ void App::renderUI() {
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.8f, 0.3f, 1.0f));
             
             if (ImGui::Button("Apply Changes", ImVec2(-1, 0))) {
+                // Get current time
+                auto now = std::chrono::system_clock::now();
+                auto now_time_t = std::chrono::system_clock::to_time_t(now);
+                
+                // Format time string
+                std::stringstream ss;
+                ss << std::put_time(std::localtime(&now_time_t), "%Y-%m-%d %H:%M:%S");
+                
+                // Save to file
+                std::ofstream outFile("~/.last_xinput");
+                outFile << ss.str();
+                outFile.close();
+                
                 applyXInputChanges(dev);
                 dev.pending_changes.clear();
             }
