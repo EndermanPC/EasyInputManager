@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(InputManagerGUI)
+project(EasyInputManager)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,7 +22,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-add_executable(InputManagerGUI
+add_executable(EasyInputManager
     src/main.cpp
     src/app.cpp
     include/app.h
@@ -36,7 +36,7 @@ add_executable(InputManagerGUI
     ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer2.cpp
 )
 
-target_link_libraries(InputManagerGUI PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(EasyInputManager PRIVATE ${SDL2_LIBRARIES})
 
 # Install target
-install(TARGETS InputManagerGUI DESTINATION bin)
+install(TARGETS EasyInputManager DESTINATION bin)
