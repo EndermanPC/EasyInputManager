@@ -53,7 +53,7 @@ make
 
 Run the application:
 ```bash
-./InputManagerGUI
+./EasyInputManager
 ```
 
 ### Interface Guide
