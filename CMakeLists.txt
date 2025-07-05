@@ -10,24 +10,19 @@ if(NOT SDL2_FOUND)
     message(FATAL_ERROR "SDL2 not found!")
 endif()
 
-# ImGui source files
+# ImGui source
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
-if(NOT EXISTS ${IMGUI_DIR})
-    message(FATAL_ERROR "ImGui directory not found! Please run: git clone https://github.com/ocornut/imgui.git imgui")
+if(NOT EXISTS ${IMGUI_DIR}/imgui.cpp)
+    message(FATAL_ERROR "ImGui not found! Please run: git clone https://github.com/ocornut/imgui.git imgui")
 endif()
-
-include_directories(
-    ${SDL2_INCLUDE_DIRS}
-    ${IMGUI_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
 
 add_executable(EasyInputManager
     src/main.cpp
     src/app.cpp
-    include/app.h
     src/devicemanager.cpp
+    include/app.h
     include/devicemanager.h
+
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_draw.cpp
     ${IMGUI_DIR}/imgui_widgets.cpp
@@ -36,7 +31,12 @@ add_executable(EasyInputManager
     ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer2.cpp
 )
 
-target_link_libraries(EasyInputManager PRIVATE ${SDL2_LIBRARIES})
+target_include_directories(EasyInputManager PRIVATE
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-# Install target
+target_link_libraries(EasyInputManager PRIVATE SDL2::SDL2)
+
 install(TARGETS EasyInputManager DESTINATION bin)
