@@ -119,7 +119,7 @@ void App::renderUI() {
 
         // Add current time and user info
         std::string lastUpdate = "Never";
-        std::ifstream inFile("~/.last_xinput");
+        std::ifstream inFile(".last_xinput");
         if(inFile.good()) {
             std::getline(inFile, lastUpdate);
         }
@@ -170,12 +170,15 @@ void App::renderUI() {
                 ss << std::put_time(std::localtime(&now_time_t), "%Y-%m-%d %H:%M:%S");
                 
                 // Save to file
-                std::ofstream outFile("~/.last_xinput");
+                std::ofstream outFile(".last_xinput");
                 outFile << ss.str();
                 outFile.close();
                 
                 applyXInputChanges(dev);
                 dev.pending_changes.clear();
+
+                // Update the GUI
+                devices = listXInputDevices();
             }
             
             ImGui::PopStyleColor(2);
