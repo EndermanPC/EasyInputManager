@@ -10,7 +10,7 @@ bool App::init() {
         return false;
     }
 
-    window = SDL_CreateWindow("Input Manager", 
+    window = SDL_CreateWindow("Easy Input Manager", 
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
         800, 600, 
         SDL_WINDOW_RESIZABLE);
