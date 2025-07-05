@@ -47,7 +47,12 @@ std::vector<InputDevice> listXInputDevices() {
 
 void applyXInputChanges(const InputDevice& device) {
     for (auto& [key, val] : device.pending_changes) {
-        std::string cmd = "pkexec xinput set-prop " + device.id + " " + key + " " + val;
+        std::string trimmed_val = trim(val);
+        if (trimmed_val.empty()) {
+            std::cerr << "Skipping property '" << key << "' because value is empty!" << std::endl;
+            continue;
+        }
+        std::string cmd = "xinput set-prop " + device.id + " \"" + key + "\" " + trimmed_val;
         std::cout << "Applying: " << cmd << std::endl;
         system(cmd.c_str());
     }
