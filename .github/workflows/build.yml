@@ -1,0 +1,39 @@
+name: C++ CI (CMake + SDL2 + ImGui)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake g++ libsdl2-dev
+
+    - name: Clone ImGui
+      run: |
+        git clone https://github.com/ocornut/imgui.git imgui
+
+    - name: Configure project with CMake
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+
+    - name: Build project
+      run: |
+        cd build
+        make -j$(nproc)
+
+    - name: Optional - Run tests
+      run: |
+        echo "No tests defined"
